@@ -1,0 +1,23 @@
+workflows:
+  dania-android:
+    name: Danîa✨ Android
+    max_build_duration: 120
+    environment:
+      flutter: stable
+      android_signing:
+        - dania_keystore
+    scripts:
+      - name: Generate Android platform files
+        script: |
+          if [ ! -d android ]; then flutter create --platforms=android .; fi
+      - name: Get packages
+        script: flutter pub get
+      - name: Analyze
+        script: flutter analyze
+      - name: Build APK for testing
+        script: flutter build apk --release
+      - name: Build AAB for Google Play
+        script: flutter build appbundle --release
+    artifacts:
+      - build/app/outputs/flutter-apk/app-release.apk
+      - build/app/outputs/bundle/release/app-release.aab
